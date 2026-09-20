@@ -1,0 +1,76 @@
+# SPDX-License-Identifier: Apache-2.0
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# A new push to the same branch supersedes the run in progress.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run test:unit
+      - run: npm run build
+      - run: npm run audit:licenses
+      - run: npm run sbom
+      - run: npm run verify:package
+      - name: Docs are up to date
+        run: npm run docs && git diff --exit-code docs/
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/ifc-lens
+          key: certification-datasets-80d976a9b193a26a8e928c3e79bff67af1de68a8
+      - run: npm run corpus:fetch
+      - run: npm run test:corpus
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:browser
+      - run: npm run test:corpus:browser
+      - run: npm run benchmark -- small --json benchmark-small.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: reports
+          path: |
+            test-results/
+            playwright-report/
+            benchmark-small.json
+            dist/build-provenance.json
+            COMPLIANCE.json
+            sbom.cdx.json
+
+  browsers:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [firefox, webkit]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: npx playwright install --with-deps ${{ matrix.browser }}
+      - run: npx playwright test --project=${{ matrix.browser }}

@@ -1,0 +1,40 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ifc-lens demo</title>
+<meta name="description" content="Open IFC building models in the browser with the ifc-lens web component.">
+<link rel="stylesheet" href="./demo.css">
+<script type="module" src="../dist/ifc-viewer.js"></script>
+<script type="module" src="./demo.js"></script>
+</head>
+<body>
+<header class="bar">
+  <h1>ifc-lens</h1>
+  <form class="source" id="source">
+    <label for="model">Model</label>
+    <select id="model">
+      <option value="models/harbour-pavilion.ifc">Harbour pavilion (bundled)</option>
+    </select>
+    <label class="sr" for="url">Model URL</label>
+    <input id="url" type="url" placeholder="Paste an .ifc URL" inputmode="url">
+    <button type="submit">Open URL</button>
+    <label class="file-button">Open file<input id="file" type="file" accept=".ifc,.ifczip"></label>
+  </form>
+</header>
+<main>
+  <ifc-viewer id="viewer" src="models/harbour-pavilion.ifc" theme="auto"></ifc-viewer>
+  <aside class="log" aria-label="Viewer events">
+    <h2>Events</h2>
+    <ol id="log"></ol>
+    <h2>Embed it</h2>
+    <pre><code>&lt;script type="module" src="/ifc-viewer/ifc-viewer.js"&gt;&lt;/script&gt;
+&lt;ifc-viewer src="/models/building.ifc"
+  style="display:block;height:600px"&gt;&lt;/ifc-viewer&gt;</code></pre>
+    <p class="keys">Drag to orbit, right-drag or Shift-drag to pan, scroll to zoom. With the view focused: F fits, H hides, I isolates, A shows all, C opens the section tool, Esc clears the selection.</p>
+  </aside>
+</main>
+</body>
+</html>

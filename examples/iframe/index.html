@@ -1,0 +1,36 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ifc-viewer in a sandboxed iframe</title>
+<style>iframe { width: 100%; height: 520px; border: 1px solid #c3cac9; }</style>
+</head>
+<body>
+<p>The viewer runs on <code id="origin"></code>; this page controls it through the versioned postMessage bridge.</p>
+<button id="fit" type="button">Fit model</button>
+<button id="hide" type="button">Hide selection</button>
+<button id="all" type="button">Show all</button>
+<output id="status">Waiting for the viewer…</output>
+<iframe id="frame" title="IFC model viewer" sandbox="allow-scripts allow-same-origin" referrerpolicy="no-referrer"></iframe>
+<script type="module">
+  import { IfcViewerFrameClient } from "../../dist/iframe/client.js";
+  // Viewer origin: another port of the same host by default (?viewer=https://viewer.example.com).
+  const params = new URLSearchParams(location.search);
+  const viewerOrigin = params.get("viewer") ?? `${location.protocol}//${location.hostname}:8124`;
+  document.getElementById("origin").textContent = viewerOrigin;
+  const frame = document.getElementById("frame");
+  const status = document.getElementById("status");
+  const client = new IfcViewerFrameClient(frame, { viewerOrigin });
+  const model = `${viewerOrigin}/demo/models/harbour-pavilion.ifc`;
+  frame.src = IfcViewerFrameClient.frameUrl(`${viewerOrigin}/dist/iframe/index.html`, location.origin, client.sessionNonce, model);
+  let selected = [];
+  client.on("ifc-load", (d) => { status.textContent = `Loaded ${d.stats.productsWithGeometry} elements`; window.bridgeLoaded = true; });
+  client.on("ifc-selection-change", (d) => { selected = d.selectedIds; status.textContent = `Selected #${selected.join(", #") || "none"}`; window.bridgeSelection = selected; });
+  document.getElementById("fit").onclick = () => client.call("fit");
+  document.getElementById("hide").onclick = () => selected.length && client.call("hide", { ids: selected });
+  document.getElementById("all").onclick = () => client.call("showAll");
+  window.bridge = client;
+</script>
+</body>
+</html>

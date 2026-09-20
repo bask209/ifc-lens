@@ -1,0 +1,3 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+html, body { margin: 0; height: 100%; }
+ifc-viewer { position: absolute; inset: 0; }

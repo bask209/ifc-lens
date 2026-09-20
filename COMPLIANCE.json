@@ -1,0 +1,71 @@
+{
+  "runtimePolicy": "Apache-2.0-or-browser-native",
+  "ordinaryRuntimeDependencies": [],
+  "components": [
+    {
+      "name": "ifc-lens",
+      "license": "Apache-2.0",
+      "scope": "runtime",
+      "note": "all shipped JavaScript is compiled from src/ (verified via source maps)"
+    },
+    {
+      "name": "WebGL2, Web Workers, Custom Elements, Streams, DecompressionStream",
+      "license": "browser-native",
+      "scope": "runtime"
+    }
+  ],
+  "renderer": {
+    "name": "project WebGL2 renderer",
+    "license": "Apache-2.0",
+    "note": "Babylon.js not used: its ESM closure includes a 0BSD tslib copy and its NOTICE lists MIT meshoptimizer"
+  },
+  "csgBackend": {
+    "name": "project-native mesh Boolean engine",
+    "license": "Apache-2.0",
+    "note": "Manifold not used: its browser build embeds MIT/NCSA Emscripten runtime code"
+  },
+  "developmentDependencies": [
+    {
+      "name": "@playwright/test",
+      "version": "1.63.0",
+      "license": "Apache-2.0"
+    },
+    {
+      "name": "@types/node",
+      "version": "24.13.6",
+      "license": "MIT",
+      "exception": "MIT — TypeScript type declarations used only to type-check tests and scripts"
+    },
+    {
+      "name": "@typescript/typescript-linux-x64",
+      "version": "7.0.2",
+      "license": "Apache-2.0"
+    },
+    {
+      "name": "playwright",
+      "version": "1.63.0",
+      "license": "Apache-2.0"
+    },
+    {
+      "name": "playwright-core",
+      "version": "1.63.0",
+      "license": "Apache-2.0"
+    },
+    {
+      "name": "typescript",
+      "version": "7.0.2",
+      "license": "Apache-2.0"
+    },
+    {
+      "name": "undici-types",
+      "version": "7.18.2",
+      "license": "MIT",
+      "exception": "MIT — dependency of @types/node (type declarations only)"
+    }
+  ],
+  "testData": {
+    "name": "buildingSMART Certification-datasets",
+    "license": "CC-BY-4.0",
+    "distribution": "fetched for tests at a pinned commit; not redistributed"
+  }
+}

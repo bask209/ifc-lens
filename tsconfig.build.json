@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+    "declaration": true,
+    "declarationMap": false,
+    "sourceMap": true,
+    "inlineSources": false,
+    "importHelpers": false,
+    "noEmitHelpers": true,
+    "removeComments": false
+  },
+  "include": ["src/**/*.ts"]
+}

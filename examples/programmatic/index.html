@@ -1,0 +1,26 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Programmatic ifc-viewer</title>
+<script type="module">
+  import "../../dist/ifc-viewer.js";
+
+  const viewer = document.querySelector("#model");
+  const out = document.querySelector("#out");
+  viewer.addEventListener("ifc-progress", (e) => { out.textContent = `${e.detail.phase} ${e.detail.completed}`; });
+  viewer.addEventListener("ifc-selection-change", async (e) => {
+    const [id] = e.detail.selectedIds;
+    if (id !== undefined) out.textContent = JSON.stringify(await viewer.getProperties(id), null, 2);
+  });
+  await viewer.load("../../demo/models/harbour-pavilion.ifc");
+  const roof = viewer.viewer.model.tree.find((n) => n.name === "Pitched roof");
+  viewer.select(roof.id, { fit: true });
+</script>
+</head>
+<body>
+<ifc-viewer id="model" ui="minimal" style="display:block;height:500px"></ifc-viewer>
+<pre id="out"></pre>
+</body>
+</html>

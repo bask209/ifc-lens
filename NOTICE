@@ -1,0 +1,13 @@
+ifc-lens — embeddable IFC web viewer
+Copyright 2026 The ifc-lens authors
+
+This product is licensed under the Apache License, Version 2.0 (see LICENSE).
+
+The distributed runtime (dist/) consists solely of original project source
+compiled by the TypeScript compiler. It contains no third-party runtime
+components. Rendering uses the browser's native WebGL2 API; Boolean geometry,
+triangulation and STEP parsing are implemented in this project.
+
+IFC concepts and entity/attribute names follow the publicly documented
+buildingSMART IFC specifications; no schema files, documentation text or
+generated schema tables are included.

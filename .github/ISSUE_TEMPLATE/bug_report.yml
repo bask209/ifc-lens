@@ -1,0 +1,50 @@
+# SPDX-License-Identifier: Apache-2.0
+name: Bug report
+description: A model that does not open, renders wrongly, or an API that misbehaves.
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you did, what you expected, and what you got instead.
+    validations:
+      required: true
+  - type: input
+    id: model
+    attributes:
+      label: Model
+      description: Which IFC file, its schema (IFC2X3, IFC4, IFC4X3) and roughly its size. Attach it if you can share it.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: ifc-lens version
+      placeholder: 1.0.0, or a commit SHA
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and OS
+      placeholder: Chrome 131 on Windows 11
+    validations:
+      required: true
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Diagnostics
+      description: >
+        Anything the viewer reported: the message in the view, `ifc-error` details, the `diagnostics` array from
+        `ifc-load`, and console output. Paste as text rather than a screenshot where you can.
+      render: text
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checks
+      options:
+        - label: The view says WebGL2 is available (the viewer reports it when it is not).
+          required: false
+        - label: I can share a file or a snippet that reproduces this.
+          required: false

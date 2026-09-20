@@ -1,0 +1,24 @@
+# SPDX-License-Identifier: Apache-2.0
+name: Feature or IFC coverage request
+description: Missing IFC support, or a capability the viewer should have.
+labels: [enhancement]
+body:
+  - type: textarea
+    id: need
+    attributes:
+      label: What you need
+      description: The task you are trying to do, not only the feature you have in mind.
+    validations:
+      required: true
+  - type: input
+    id: entities
+    attributes:
+      label: IFC entities involved
+      description: For coverage requests, the entity names and the schema, e.g. IfcSectionedSolidHorizontal in IFC4X3.
+  - type: textarea
+    id: context
+    attributes:
+      label: Anything else
+      description: >
+        Sample files, the relevant part of the specification, or how other tools present it.
+        Check docs/ifc-support.md first — it lists what is supported and what is deliberately out of scope.

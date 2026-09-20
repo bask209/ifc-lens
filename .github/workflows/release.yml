@@ -1,0 +1,70 @@
+# SPDX-License-Identifier: Apache-2.0
+name: release
+
+# Tag a release with `git tag v1.0.0 && git push origin v1.0.0`. The tag must
+# match the version in package.json. Publishing needs the NPM_TOKEN secret and
+# a public repository (npm provenance is attested from this workflow's OIDC
+# token); without the secret the job still builds and verifies the tarball.
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: Publish to npm (otherwise the tarball is only built and verified)
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  release:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          registry-url: https://registry.npmjs.org
+      - run: npm ci
+
+      - name: Tag matches package.json version
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          pkg="$(node -p "require('./package.json').version")"
+          test "$tag" = "$pkg" || { echo "tag $GITHUB_REF_NAME does not match package version $pkg"; exit 1; }
+
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/ifc-lens
+          key: certification-datasets-80d976a9b193a26a8e928c3e79bff67af1de68a8
+      - run: npm run corpus:fetch
+      - run: npx playwright install --with-deps chromium
+
+      - name: Verify the release
+        run: npm run verify
+
+      - name: Build the tarball
+        run: npm pack --pack-destination .
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: package
+          path: |
+            *.tgz
+            COMPLIANCE.json
+            sbom.cdx.json
+            dist/build-provenance.json
+
+      - name: Publish to npm
+        if: github.event_name == 'push' || inputs.publish
+        run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

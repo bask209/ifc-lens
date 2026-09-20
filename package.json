@@ -1,0 +1,91 @@
+{
+  "name": "ifc-lens",
+  "version": "1.0.0",
+  "description": "Embeddable, dependency-free IFC (STEP Part 21) web viewer delivered as a Shadow-DOM <ifc-viewer> custom element.",
+  "license": "Apache-2.0",
+  "author": "Victor <vidabasca@gmail.com>",
+  "homepage": "https://github.com/bask209/ifc-lens#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bask209/ifc-lens.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bask209/ifc-lens/issues"
+  },
+  "keywords": [
+    "ifc",
+    "bim",
+    "step",
+    "iso-10303-21",
+    "viewer",
+    "webgl2",
+    "web-component",
+    "custom-element",
+    "buildingsmart",
+    "ifc4",
+    "ifc4x3"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "private": false,
+  "engines": {
+    "node": ">=22.18"
+  },
+  "files": [
+    "dist/",
+    "LICENSE",
+    "NOTICE",
+    "README.md",
+    "COMPLIANCE.json",
+    "sbom.cdx.json"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./element": {
+      "types": "./dist/ifc-viewer.d.ts",
+      "import": "./dist/ifc-viewer.js"
+    },
+    "./core": {
+      "types": "./dist/core/index.d.ts",
+      "import": "./dist/core/index.js"
+    },
+    "./iframe": "./dist/iframe/index.html"
+  },
+  "scripts": {
+    "build": "npm run clean && tsc -p tsconfig.build.json && node scripts/copy-assets.ts",
+    "clean": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\"",
+    "typecheck": "tsc -p tsconfig.json",
+    "lint": "node scripts/lint.ts",
+    "test": "npm run test:unit",
+    "test:unit": "node --test --test-reporter=spec \"tests/unit/**/*.test.ts\"",
+    "test:browser": "playwright test --project=chromium",
+    "test:browser:all": "playwright test",
+    "corpus:fetch": "node scripts/fetch-corpus.ts",
+    "test:corpus": "node --test --test-reporter=spec tests/corpus/corpus.test.ts",
+    "test:corpus:browser": "playwright test --project=corpus",
+    "audit:licenses": "node scripts/audit-licenses.ts",
+    "sbom": "node scripts/generate-sbom.ts",
+    "docs:support": "node scripts/generate-support-doc.ts",
+    "docs:images": "node scripts/capture-screenshots.ts",
+    "fixtures": "node scripts/generate-fixtures.ts",
+    "benchmark": "node scripts/benchmark.ts",
+    "serve": "node scripts/serve.ts --port 8080",
+    "demo": "npm run build && node scripts/serve.ts --port 8080",
+    "verify": "npm run lint && npm run typecheck && npm run test:unit && npm run build && npm run audit:licenses && npm run sbom && npm run verify:package && npm run test:corpus && npm run test:browser && npm run test:corpus:browser",
+    "prepack": "npm run build && npm run audit:licenses",
+    "verify:package": "node scripts/verify-package.ts",
+    "docs:api": "node scripts/generate-api-doc.ts",
+    "docs:compat": "node scripts/generate-compat-doc.ts",
+    "docs": "npm run docs:support && npm run docs:api && npm run docs:compat"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0",
+    "@types/node": "24.13.6",
+    "typescript": "7.0.2"
+  }
+}
