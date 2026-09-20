@@ -37,7 +37,7 @@ The buildingSMART IFC specification is used as reference material only. No schem
 
    All other development dependencies (`typescript`, `@typescript/typescript-*`, `@playwright/test`, `playwright`, `playwright-core`) are Apache-2.0.
 
-The audit writes `dist/build-provenance.json` (compiler version, commit, SHA-256 and source list of every emitted file) and `COMPLIANCE.json`. `npm run verify:package` re-runs the audit on the unpacked `npm pack` tarball, because only the tarball is what consumers receive. `npm run sbom` writes a CycloneDX 1.5 SBOM: the shipped files with hashes, plus the development packages with `scope: excluded`.
+The audit writes `dist/build-provenance.json` (compiler version, commit, SHA-256 and source list of every emitted file) and `COMPLIANCE.json`. `npm run verify:package` re-runs the audit on the unpacked `npm pack` tarball, because only the tarball is what consumers receive. `npm run sbom` writes a CycloneDX 1.5 SBOM: the shipped files with hashes, plus the development packages with `scope: excluded`. It describes a build rather than the source, so it is generated (by `npm run sbom`, and by `prepack` for every tarball) instead of being committed; the document is reproducible, since its serial number is derived from the inventory and its timestamp from the commit being described.
 
 ## Test data
 

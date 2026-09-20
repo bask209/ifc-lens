@@ -18,7 +18,7 @@ npx playwright install --with-deps chromium   # browser tests
 | `npm run test:browser` | Playwright integration and visual tests in Chromium (`test:browser:all` adds Firefox and WebKit) |
 | `npm run test:corpus:browser` | Every corpus file in the real `<ifc-viewer>` in Chromium |
 | `npm run audit:licenses` | Artifact provenance and license gate; writes `dist/build-provenance.json` and `COMPLIANCE.json` |
-| `npm run sbom` | Writes `sbom.cdx.json` (CycloneDX 1.5) |
+| `npm run sbom` | Writes `sbom.cdx.json` (CycloneDX 1.5). The document is reproducible — the serial number comes from the inventory and the timestamp from the commit — and is built rather than committed |
 | `npm run verify:package` | `npm pack`, unpack into a clean directory, re-run the audit on the tarball |
 | `npm run docs` | Regenerates `docs/ifc-support.md`, `docs/api.md` and `docs/compatibility.md` |
 | `npm run fixtures` | Regenerates the Apache-2.0 test fixtures and the demo model |

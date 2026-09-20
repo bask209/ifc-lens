@@ -3,7 +3,8 @@
  * Writes sbom.cdx.json (CycloneDX 1.5): the shipped package with per-file
  * hashes of dist/, and every development package as an excluded component.
  */
-import { createHash, randomUUID } from "node:crypto";
+import { createHash } from "node:crypto";
+import { execFileSync } from "node:child_process";
 import { existsSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -36,13 +37,29 @@ const visit = (dir: string): void => {
 };
 visit(join(root, "node_modules"));
 
+/**
+ * The document is deterministic: the serial number is derived from the
+ * inventory itself and the timestamp from the commit being described, so
+ * regenerating an unchanged tree reproduces the file byte for byte.
+ */
+const inventory = JSON.stringify([...files, ...dev]);
+const digest = createHash("sha256").update(inventory).digest("hex");
+const serial = [digest.slice(0, 8), digest.slice(8, 12), `5${digest.slice(13, 16)}`, ((parseInt(digest.slice(16, 18), 16) & 0x3f) | 0x80).toString(16) + digest.slice(18, 20), digest.slice(20, 32)].join("-");
+const commitDate = (): string => {
+  try {
+    return new Date(execFileSync("git", ["log", "-1", "--format=%cI"], { cwd: root, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim()).toISOString();
+  } catch {
+    return new Date().toISOString(); // no commit yet: the working tree is the subject
+  }
+};
+
 const bom = {
   bomFormat: "CycloneDX",
   specVersion: "1.5",
-  serialNumber: `urn:uuid:${randomUUID()}`,
+  serialNumber: `urn:uuid:${serial}`,
   version: 1,
   metadata: {
-    timestamp: new Date().toISOString(),
+    timestamp: commitDate(),
     component: { type: "library", name: pkg.name, version: pkg.version, description: pkg.description, licenses: [{ license: { id: "Apache-2.0" } }], purl: `pkg:npm/${pkg.name}@${pkg.version}` },
   },
   components: [...files, ...dev],

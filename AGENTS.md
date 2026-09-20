@@ -93,7 +93,7 @@ and that test fails by design — restructure rather than relax it.
 | `dist/` | `npm run build` |
 | `docs/api.md`, `docs/ifc-support.md`, `docs/compatibility.md` | `npm run docs` |
 | `COMPLIANCE.json`, `dist/build-provenance.json` | `npm run audit:licenses` |
-| `sbom.cdx.json` | `npm run sbom` |
+| `sbom.cdx.json` (untracked: it describes a build, not the source) | `npm run sbom`, and `prepack` before a publish |
 | `tests/fixtures/generated/`, `demo/models/harbour-pavilion.ifc` | `npm run fixtures` |
 | `docs/images/` (README screenshots) | `npm run docs:images` — by hand; renders differ between GPUs, so CI never regenerates them |
 | `tests/corpus/results.json` | `UPDATE_CORPUS_RESULTS=1 npm run test:corpus` (review the diff, explain it) |
