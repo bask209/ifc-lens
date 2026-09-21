@@ -35,7 +35,7 @@ jobs:
       - run: npm run verify:package
       - name: Docs are up to date
         run: npm run docs && git diff --exit-code docs/
-      - uses: actions/cache@v4
+      - uses: actions/cache@v6
         with:
           path: ~/.cache/ifc-lens
           key: certification-datasets-80d976a9b193a26a8e928c3e79bff67af1de68a8

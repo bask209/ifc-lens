@@ -41,7 +41,7 @@ jobs:
           pkg="$(node -p "require('./package.json').version")"
           test "$tag" = "$pkg" || { echo "tag $GITHUB_REF_NAME does not match package version $pkg"; exit 1; }
 
-      - uses: actions/cache@v4
+      - uses: actions/cache@v6
         with:
           path: ~/.cache/ifc-lens
           key: certification-datasets-80d976a9b193a26a8e928c3e79bff67af1de68a8
