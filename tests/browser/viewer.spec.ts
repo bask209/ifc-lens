@@ -388,10 +388,13 @@ test.describe("interaction", () => {
     const distance = (c: { eye: number[]; target: number[] }) => Math.hypot(c.eye[0]! - c.target[0]!, c.eye[1]! - c.target[1]!, c.eye[2]! - c.target[2]!);
     const before = await cam();
     await v.getByRole("button", { name: "View from top", exact: true }).click();
+    // The swing is animated, and the direction reaches the target a frame or
+    // two before the eased motion settles: wait for both.
     await expect.poll(async () => {
       const c = await cam();
       const d = distance(c);
-      return Math.abs(c.eye[0]! - c.target[0]!) < d * 0.02 && Math.abs(c.eye[1]! - c.target[1]!) < d * 0.02 && c.eye[2]! > c.target[2]!;
+      const overhead = Math.abs(c.eye[0]! - c.target[0]!) < d * 0.02 && Math.abs(c.eye[1]! - c.target[1]!) < d * 0.02 && c.eye[2]! > c.target[2]!;
+      return overhead && Math.abs(d - distance(before)) < 1e-6;
     }).toBe(true);
     const top = await cam();
     // the pivot and the zoom are preserved: only the direction changes
