@@ -8,9 +8,16 @@ updates:
     open-pull-requests-limit: 5
     commit-message:
       prefix: deps
+    # One pull request per ecosystem per week, rather than one per package.
+    groups:
+      dev-dependencies:
+        patterns: ["*"]
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: weekly
     commit-message:
       prefix: ci
+    groups:
+      actions:
+        patterns: ["*"]
