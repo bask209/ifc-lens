@@ -77,6 +77,7 @@
     "serve": "node scripts/serve.ts --port 8080",
     "demo": "npm run build && node scripts/serve.ts --port 8080",
     "verify": "npm run lint && npm run typecheck && npm run test:unit && npm run build && npm run audit:licenses && npm run sbom && npm run verify:package && npm run test:corpus && npm run test:browser && npm run test:corpus:browser",
+    "prepare": "node scripts/prepare.ts",
     "prepack": "npm run build && npm run audit:licenses && npm run sbom",
     "verify:package": "node scripts/verify-package.ts",
     "docs:api": "node scripts/generate-api-doc.ts",

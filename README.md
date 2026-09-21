@@ -1,5 +1,8 @@
 # ifc-lens
 
+[![ci](https://github.com/bask209/ifc-lens/actions/workflows/ci.yml/badge.svg)](https://github.com/bask209/ifc-lens/actions/workflows/ci.yml)
+[![license](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
+
 An embeddable IFC viewer for the browser, delivered as a `<ifc-viewer>` custom element.
 
 - Opens IFC2X3, IFC4 and IFC4X3 STEP files (`.ifc`, `.ifczip`) from a URL, a `File`/`Blob` or an `ArrayBuffer`.
@@ -20,7 +23,14 @@ An embeddable IFC viewer for the browser, delivered as a `<ifc-viewer>` custom e
 <ifc-viewer src="/models/building.ifc" style="display:block;width:100%;height:600px"></ifc-viewer>
 ```
 
-Serve the package's `dist/` directory as `/ifc-viewer/`. The worker (`dist/worker/model-worker.js`) is resolved relative to the module, so keep the directory structure intact, or set the `worker-url` attribute.
+Install it from the repository (it builds itself on install), then serve the package's `dist/` directory as `/ifc-viewer/`:
+
+```sh
+npm install github:bask209/ifc-lens
+cp -r node_modules/ifc-lens/dist public/ifc-viewer
+```
+
+The worker (`dist/worker/model-worker.js`) is resolved relative to the module, so keep the directory structure intact, or set the `worker-url` attribute.
 
 Load local files or buffers programmatically:
 

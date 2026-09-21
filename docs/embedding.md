@@ -1,5 +1,13 @@
 # Embedding
 
+## Install
+
+```sh
+npm install github:bask209/ifc-lens     # builds on install; no runtime dependencies
+```
+
+Or clone and `npm ci && npm run build`. Either way the artifact is `dist/`, plain ES modules with no bundler step.
+
 ## Files to serve
 
 Copy the package's `dist/` directory to your site (for example as `/ifc-viewer/`). The element module resolves its worker as `./worker/model-worker.js` relative to itself. If you serve the worker elsewhere, set `worker-url` (a module worker script URL).
