@@ -80,6 +80,18 @@ Parts: `root`, `viewport`, `canvas`, `toolbar`, `view-cube`, `pivot`, `help-butt
 
 Hide a single overlay with `ifc-viewer::part(view-cube) { display: none; }` (the same works for `help-button` and `help-panel`), or use `ui="none"` for a bare canvas.
 
+## Frameworks and server rendering
+
+The module registers the element on import and extends `HTMLElement`, so importing the package root on a server (Next.js, Nuxt, SvelteKit) fails with `ReferenceError: HTMLElement is not defined`. Import it from a client-only path — inside `useEffect`/`onMounted`, through `dynamic(() => …, { ssr: false })`, or as a plain `<script type="module">` tag. Attributes and events are ordinary DOM: set `src`, `ui` and `theme` as attributes, call methods through a ref, and subscribe with `addEventListener("ifc-…")`.
+
+`ifc-lens/core` has no DOM or WebGL dependency and runs in Node. The corpus suite uses it that way to parse files and build geometry headlessly:
+
+```js
+import { LoadSession } from "ifc-lens/core";
+const stats = await new LoadSession({ onBatch: (b) => …, onMetadata: (m) => … })
+  .run({ kind: "buffer", buffer, name: "model.ifc" });
+```
+
 ## Using the viewer without the element
 
 ```js

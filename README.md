@@ -32,6 +32,8 @@ cp -r node_modules/ifc-lens/dist public/ifc-viewer
 
 The worker (`dist/worker/model-worker.js`) is resolved relative to the module, so keep the directory structure intact, or set the `worker-url` attribute.
 
+In a framework, import the module from a client-only path: it extends `HTMLElement`, so server rendering it throws. `ifc-lens/core` is DOM-free and runs in Node for headless parsing and geometry — see [docs/embedding.md](docs/embedding.md).
+
 Load local files or buffers programmatically:
 
 ```js
