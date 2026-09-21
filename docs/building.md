@@ -40,6 +40,10 @@ Playwright's Chromium renders WebGL through SwiftShader by default, which works 
 IFC_LENS_ANGLE=gl-egl npm run test:browser
 ```
 
+Headless Firefox provides no WebGL context, so `--project=firefox` runs headed and needs a display:
+`xvfb-run -a npx playwright test --project=firefox` (CI does this; the package is `xvfb` on Debian
+and Ubuntu). WebKit and Chromium run headless as usual.
+
 The suites run three Chromium workers. On a loaded machine the browsers can take longer than the 60 s
 setup timeout to start, which fails the first tests scheduled with `Test timeout … while setting up "page"`.
 That is contention, not a product failure: re-run the suite on an idle machine, or lower the worker count

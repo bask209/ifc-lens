@@ -73,4 +73,6 @@ jobs:
       - run: npm ci
       - run: npm run build
       - run: npx playwright install --with-deps ${{ matrix.browser }}
-      - run: npx playwright test --project=${{ matrix.browser }}
+      # Firefox only exposes WebGL when it has a display, so the matrix runs
+      # under a virtual one; WebKit is unaffected by the wrapper.
+      - run: xvfb-run -a npx playwright test --project=${{ matrix.browser }}
